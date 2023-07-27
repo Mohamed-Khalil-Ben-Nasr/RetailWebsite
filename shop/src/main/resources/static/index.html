@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Shop Docs</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div class="container">
+<h3>Authentication</h3>
+<p>This application uses JWTs for user authentication. To log in to the application POST an object of the form</p>
+<pre>
+{login:&lt;login name&gt;,password:&lt;password&gt;}
+</pre>
+<p>to the URL</p>
+<pre>
+http://localhost:8085/user/login
+</pre>
+<p>The server will reply with a JWT that the user can use to authenticate themselves for most of the interactions below. To authenticate the user for a given interaction with the server, add the header</p>
+<pre>
+Authentication: bearer &lt;JWT&gt;
+</pre>
+<p>with &lt;JWT&gt; replaced with the JWT you received at log in.</p>
+<h3>Users</h3>
+<p>To create a new user POST an object of the form</p>
+<pre>
+{name:&lt;user name&gt;,password:&lt;password&gt;}
+</pre>
+<p>to the URL</p>
+<pre>
+http://localhost:8085/user/create
+</pre>
+<p>The server will reply with a JWT. To log in a user, post the object to the URL</p>
+<pre>
+http://localhost:8085/user/login
+</pre>
+<p>instead.</p>
+<h3>Profiles</h3>
+<p>All users of the system, both sellers and buyers, can create profiles with contact information.</p>
+<p>To create a profile for a user, POST an object of the form</p>
+<pre>
+{fullname:&lt;User's full name&gt;,phone:&lt;phone number&gt;,
+ email:&lt;email&gt;}
+</pre>
+<p>to the URL</p>
+<pre>
+http://localhost:8085/profile/create
+</pre>
+<p>This request requires authentication.</p>
+<p>To update an existing profile, POST the same object to the URL</p>
+<pre>
+http://localhost:8085/profile/update
+</pre>
+<p>This request requires authentication.</p>
+<p>To fetch the profile for a given user, do a GET with the URL</p>
+<pre>
+http://localhost:8085/profile/&lt;id&gt;
+</pre>
+<p>with &lt;id&gt; replaced by the id number of the user whose profile you want to see.</p>
+<h3>Items</h3>
+<p>To post an item for sale, POST an object of the form</p>
+<pre>
+{name:&lt;name of item&gt;,description:&lt;full description of item&gt;,
+ image:&lt;image URL&gt;,price:&lt;price of item in integer cents&gt;,
+ stock:&lt;number of items in stock&gt;,tags:&lt;Array of tags&gt;}
+</pre>
+<p>to the URL</p>
+<pre>
+http://localhost:8085/item
+</pre>
+<p>This request requires authentication.</p>
+<p>To get a list of all the items you have posted for sale, do a GET with the URL</p>
+<pre>
+http://localhost:8085/item/forseller
+</pre>
+<p>This request requires authentication.</p>
+<p>To delete an item you have posted for sale, do a DELETE with the URL</p>
+<pre>
+http://localhost:8085/item/&lt;id&gt;
+</pre>
+<p>With <code>&lt;id&gt;</code> replaced with the id number of the item to delete. This request requires authentication.</p>
+<h3>Searching for and purchasing items</h3>
+<p>To display a list of all products for sale that have a given tag, do a GET with the URL</p>
+<pre>
+http://localhost:8085/item?tag=&lt;tag&gt;
+</pre>
+<p>With <code>&lt;tag&gt;</code> replaced with the tag you are searching for.</p>
+<p>To purchase an item, POST an object with the form</p>
+<pre>
+{item:&lt;id number of item&gt;}
+</pre>
+<p>to the URL</p>
+<pre>
+http://localhost:8085/purchase
+</pre>
+<p>This request requires authentication.</p>
+<h3>Processing purchases</h3>
+<p>To see a list of all of the purchase requests for a given seller, do a GET with the URL</p>
+<pre>
+http://localhost:8085/purchase/forseller
+</pre>
+<p>This request requires authentication.</p>
+<p>To mark a purchase request as completed and shipped, do a GET with the URL</p>
+<pre>
+http://localhost:8085/purchase/ship/&lt;id&gt;
+</pre>
+<p>with <code>&lt;id&gt;</code> replaced by the id of the purchase. This request requires authentication.</p>
+<p>Sellers can also cancel a purchase by doing a DELETE with the URL</p>
+<pre>
+http://localhost:8085/purchase/&lt;id&gt;
+</pre>
+<p>with <code>&lt;id&gt;</code> replaced by the id of the purchase. This request requires authentication.</p>
+</div>
+</body>
+</html>
